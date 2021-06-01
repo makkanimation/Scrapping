@@ -1,0 +1,53 @@
+<?php 
+	function plainMessageTable1($email)
+	{	
+		//$newText = preg_split( '/(<table>|<TABLE>)/', $email);
+		// $newText11 = preg_split( '/(<tr>|<TR>)/', $email);
+		$newText = preg_split( '/(<tbody>|<TBODY>)/', $email);
+		$newText = explode('</tbody>',$newText[1]);
+		$newText11 = preg_split( '/(<tr>|<TR>)/', $newText[0]);
+		// print_r($newText11);echo "<br/>--";		
+		$temp=0;
+		// echo "<br/>hiii -- ".count($newText11)."<br/>";
+		if(count($newText11)<= 1)
+		{
+			$newText11 = preg_split( '/(<br>|<BR>)/', $email);
+			$temp =1;
+		}		
+		$new_array ='';
+		$newLinet='';
+		
+		$i=0;
+		foreach($newText11 as  $test1)
+		{
+			$test = preg_replace("/<.*?>/","#",$test1,3);
+			$test = preg_replace("/##/"," : ",$test);
+			// echo $i;
+			// echo "12-- ".$test;
+			if (strpos(strip_tags($test),':') !== false) 
+			{
+				$Content = preg_replace("/#?[a-z0-9]+;/i"," ",$test);
+				$new_array[]=trim(strip_tags($Content));
+			}		
+			$test="";
+			$test1="";
+			$i++;
+		}
+		// echo "<br/>lrrps--- ";
+		 // print_r($new_array);		
+		foreach($new_array as $newdat)
+		{
+			list($pieceName,$GetVal)= preg_split("/[\:]+/", $newdat ,2);
+			if($temp == 1)
+			{
+				$newLinet[] = trim(strip_tags(preg_replace('/\s+/',' ', $pieceName))).": ".trim(strip_tags(preg_replace('/\s+/',' ',$GetVal)));
+			}
+			else
+			{
+				$newLinet[] = trim(strip_tags(preg_replace('/\s+/',' ', $pieceName)))." : ".trim(strip_tags(preg_replace('/\s+/',' ',$GetVal)));
+			 }
+		} 	
+		// echo "<br/>lps--- ";
+		 // print_r($newLinet);
+		return $newLinet;
+	}
