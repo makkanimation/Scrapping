@@ -72,7 +72,7 @@ function plainMessageStrong($email)
 			$pieceName= trim(str_replace(':','',$pieceName)); */
 			
 			$GetVal =str_replace("<br>","," , trim($GetVal));
-			
+			$GetVal =trim($GetVal,":");
 			if($temp == 1)
 			{
 				$newLinet[] = trim(strip_tags(preg_replace('/\s+/','_', trim($pieceName)))).": ".trim(strip_tags(preg_replace('/\s+/',' ',trim($GetVal))));
